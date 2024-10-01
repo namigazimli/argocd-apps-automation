@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ${CHART_FOLDER}-${BRANCH_NAME}-${i}
+  namespace: argocd
+spec:
+  project: ${PROJ_NAME}
+  source:
+    repoURL: https://${GITLAB_URL}/${GITLAB_GROUP_NAME}/${GITLAB_SUBGROUP_NAME}/${CHART_FOLDER}/${i}.git
+    path: .
+    targetRevision: ${BRANCH_NAME}
+    helm:
+      valueFiles: 
+      - ${BRANCH_NAME}.yaml
+  destination:
+    namespace: ${CHART_FOLDER}-${BRANCH_NAME}
+    server: ${K8S_SERVER}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
