@@ -14,7 +14,7 @@ spec:
       valueFiles: 
       - ${BRANCH_NAME}.yaml
   destination:
-    namespace: ${CHART_FOLDER}-${BRANCH_NAME}
+    namespace: ${DEST_NAMESPACE}
     server: ${K8S_SERVER}
   syncPolicy:
     automated:
