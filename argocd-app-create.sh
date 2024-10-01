@@ -23,10 +23,9 @@ read -p "Enter the chart folder name which you want to use it in ArgoCD applicat
 read -p "Enter the GITLAB GROUP ID: " GROUP_ID
 read -p "Enter the GITLAB GROUP NAME: " GROUP_NAME
 read -p "Enter the GITLAB SUBGROUP NAME: " SUBGROUP_NAME
-read -p "Enter ArgoCD admin username: " ARGOCD_ADMIN_USER
-read -p "Enter ArgoCD admin user password: " ARGOCD_ADMIN_PASS
 read -p "Enter Gitlab CI username: " GITLAB_USER
 read -p "Enter Gitlab CI user password: " GITLAB_USER_PASS
+read -p "Enter the k8s ns name: " DEST_NAMESPACE
 K8S_SERVER="https://kubernetes.default.svc"
 
 # Fetch project names, convert to lowercase and parse as an array
