@@ -7,7 +7,7 @@ metadata:
 spec:
   project: ${PROJ_NAME}
   source:
-    repoURL: https://${GITLAB_URL}/${GITLAB_GROUP_NAME}/${GITLAB_SUBGROUP_NAME}/${CHART_FOLDER}/${i}.git
+    repoURL: https://${GITLAB_URL}/${GROUP_NAME}/${SUBGROUP_NAME}/${CHART_FOLDER}/${i}.git
     path: .
     targetRevision: ${BRANCH_NAME}
     helm:
