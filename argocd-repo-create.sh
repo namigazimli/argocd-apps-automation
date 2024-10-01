@@ -1,8 +1,8 @@
 #!/bin/bash
 # Install jq if not already installed
 if ! command -v jq &> /dev/null; then
-            echo "jq could not be found. Installing..."
-                sudo apt-get update && sudo apt-get install -y jq
+        echo "jq could not be found. Installing..."
+        sudo apt-get update && sudo apt-get install -y jq
 fi
 
 # Variables
