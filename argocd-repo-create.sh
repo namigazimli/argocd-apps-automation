@@ -20,7 +20,9 @@ get_project_names() {
 read -p "Enter your ArgoCD URL: " ARGOCD_URL
 read -p "Enter your Project name: " PROJ_NAME
 read -p "Enter the chart folder name which you want to use it in ArgoCD application: " CHART_FOLDER
-read -p "Enter your GROUP ID: " GROUP_ID
+read -p "Enter the GITLAB GROUP ID: " GROUP_ID
+read -p "Enter the GITLAB GROUP NAME: " GROUP_NAME
+read -p "Enter the GITLAB SUBGROUP NAME: " SUBGROUP_NAME
 read -p "Enter ArgoCD admin username: " ARGOCD_ADMIN_USER
 read -p "Enter ArgoCD admin user password: " ARGOCD_ADMIN_PASS
 read -p "Enter Gitlab CI username: " GITLAB_USER
@@ -36,17 +38,10 @@ if [ -z "$repo_list" ]; then
 fi
 
 mapfile -t repos <<< "$repo_list"
-
-# ARGOCD_URL="gitlab.infra.bestcomp.net"
-# PROJ_NAME="icms-staging"
-# K8S_SERVER="https://kubernetes.default.svc"
-# CHART_FOLDER="icms"
-# repos=("account-api" "account-ui" "admin-ui" "apigateway" "catalog-api" "integration-api" "notification-api" "organization-structure-api" "transaction-api" "user-ui")
-
 export ARGOCD_URL PROJ_NAME GITLAB_USER GITLAB_USER_PASS CHART_FOLDER ARGOCD_ADMIN_USER ARGOCD_ADMIN_PASS
-
 argocd login $ARGOCD_URL --username $ARGOCD_ADMIN_USER --password $ARGOCD_ADMIN_PASS --insecure
+
 for i in ${repos[@]}
 do
-	argocd repo add https://gitlab.infra.bestcomp.net/development/chart/${CHART_FOLDER}/$i.git --type git --project $PROJ_NAME --username $GITLAB_USER --password $GITLAB_USER_PASS --insecure
+	argocd repo add $GITLAB_URL/$GROUP_NAME/$SUBGROUP_NAME/${CHART_FOLDER}/$i.git --type git --project $PROJ_NAME --username $GITLAB_USER --password $GITLAB_USER_PASS --insecure
 done
