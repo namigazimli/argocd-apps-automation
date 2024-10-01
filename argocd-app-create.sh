@@ -20,8 +20,13 @@ get_project_names() {
 read -p "Enter your ArgoCD URL: " ARGOCD_URL
 read -p "Enter your Project name: " PROJ_NAME
 read -p "Enter the chart folder name which you want to use it in ArgoCD application: " CHART_FOLDER
-read -p "Enter your GROUP ID: " GROUP_ID
-read -p "Enter the repo branch name: " BRANCH_NAME
+read -p "Enter the GITLAB GROUP ID: " GROUP_ID
+read -p "Enter the GITLAB GROUP NAME: " GROUP_NAME
+read -p "Enter the GITLAB SUBGROUP NAME: " SUBGROUP_NAME
+read -p "Enter ArgoCD admin username: " ARGOCD_ADMIN_USER
+read -p "Enter ArgoCD admin user password: " ARGOCD_ADMIN_PASS
+read -p "Enter Gitlab CI username: " GITLAB_USER
+read -p "Enter Gitlab CI user password: " GITLAB_USER_PASS
 K8S_SERVER="https://kubernetes.default.svc"
 
 # Fetch project names, convert to lowercase and parse as an array
@@ -42,7 +47,6 @@ export ARGOCD_URL PROJ_NAME BRANCH_NAME DEST_NAMESPACE K8S_SERVER CHART_FOLDER
 # Process each repository
 for i in "${repos[@]}"; do
     export i
-    echo "Processing repo: $i"
     envsubst < ./application.yaml.temp > ./application.yaml  
     kubectl apply -f ./application.yaml
 done
