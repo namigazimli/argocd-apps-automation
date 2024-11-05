@@ -1,5 +1,4 @@
-
-This README will guide users on how to set up, configure, and run the script for automating the creation of ArgoCD applications using GitLab repositories.
+This README will guide users on how to set up, configure, and run the script for automating the creation of ArgoCD applications, projects, and repositories using GitLab repositories.
 
 ---
 
@@ -70,35 +69,6 @@ The script will automatically create ArgoCD application resources in your Kubern
 ### Step 2: ArgoCD Sync
 
 Once the applications are created, you can either manually sync them from the ArgoCD UI or enable automated syncing (which the script does by default). The applications will be created in the `argocd` namespace by default.
-
-### Example of `application.yaml`
-
-The generated ArgoCD application YAML looks like this:
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: ${CHART_FOLDER}-${BRANCH_NAME}-${i}
-  namespace: argocd
-spec:
-  project: ${PROJ_NAME}
-  source:
-    repoURL: ${GITLAB_URL}/${GROUP_NAME}/${SUBGROUP_NAME}/${CHART_FOLDER}/${i}.git
-    path: .
-    targetRevision: ${BRANCH_NAME}
-    helm:
-      valueFiles: 
-      - ${BRANCH_NAME}.yaml
-  destination:
-    namespace: ${DEST_NAMESPACE}
-    server: ${K8S_SERVER}
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-```
----
 
 # GitLab to ArgoCD Repository Integration Script
 
@@ -200,44 +170,20 @@ Before running the script, ensure you have the following tools installed and con
 You can download or clone the script to your system.
 
 ```bash
-git clone <repository-url>
-cd <script-directory>
+git clone https://github.com/namigazimli/argocd-apps-automation.git
+cd argocd-apps-automation
 ```
 
 ### Step 2: Create or Ensure the Existence of `project.yaml.temp`
 
 The script uses a temporary YAML file (`project.yaml.temp`) to generate the final ArgoCD `AppProject`. Ensure that this template file exists and is structured correctly.
 
-#### Example `project.yaml.temp` template:
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: ${PROJ_NAME}
-  namespace: argocd
-spec:
-  clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  description: ${PROJ_DESC}
-  destinations:
-  - name: '*'
-    namespace: '*'
-    server: '*'
-  namespaceResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  sourceRepos:
-  - '*'
-```
-
 ### Step 3: Make the Script Executable
 
 Ensure that the script has executable permissions:
 
 ```bash
-chmod +x create_argocd_project.sh
+chmod +x argocd-proj-create.sh
 ```
 
 ---
@@ -249,7 +195,7 @@ chmod +x create_argocd_project.sh
 Execute the script as follows:
 
 ```bash
-./create_argocd_project.sh
+./argocd-proj-create.sh
 ```
 
 The script will prompt you for the following inputs:
@@ -307,5 +253,3 @@ This YAML will define an ArgoCD project with the specified name and description,
 - **Customization**: The `project.yaml.temp` template is a starting point. You can customize it further to suit your specific ArgoCD project requirements, such as restricting the repositories or namespaces that can be used by the project.
 - **Cluster Access**: Ensure that you have the necessary permissions to create resources in the `argocd` namespace within your Kubernetes cluster.
 - **ArgoCD Project Namespace**: This script assumes that the `argocd` namespace exists in your cluster. If not, ensure that the namespace is created before applying the project configuration.
-
----
